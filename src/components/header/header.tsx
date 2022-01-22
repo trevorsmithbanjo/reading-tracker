@@ -1,8 +1,20 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { blueGrey } from '@mui/material/colors';
+import { styled } from '@mui/material/styles';
+
+const CustomLink = styled(Link)`
+  color: ${blueGrey[900]};
+  margin: 1rem;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 const Header: React.FC = () => (
   <div
@@ -14,19 +26,19 @@ const Header: React.FC = () => (
       height: '2rem',
     }}
   >
-    <Link href="#" underline="hover" color={blueGrey[400]}>
+    <CustomLink to="/">
       <HomeIcon fontSize="large" />
-    </Link>
-    <Link href="#" underline="hover">
+    </CustomLink>
+    <CustomLink to="/sign-in">
       <Typography
         variant="body1"
         component="div"
-        sx={{ textTransform: 'uppercase' }}
+        sx={{ textTransform: 'uppercase', fontWeight: '500' }}
         color={blueGrey[900]}
       >
         Sign In
       </Typography>
-    </Link>
+    </CustomLink>
   </div>
 );
 

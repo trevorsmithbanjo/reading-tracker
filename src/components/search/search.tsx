@@ -1,15 +1,20 @@
 import React from 'react';
-import TextField from '@mui/material/TextField';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 
-type SearchProps = {
+type SearchProps = TextFieldProps & {
   label: string;
+  width?: string;
 };
 
-const Search: React.FC<SearchProps> = ({ label }) => (
-  <Stack spacing={2}>
+const Search: React.FC<SearchProps> = ({ label, width }) => (
+  <Stack spacing={2} sx={{ width }}>
     <TextField label={label} inputProps={{ type: 'search' }} />
   </Stack>
 );
+
+Search.defaultProps = {
+  width: '100%',
+};
 
 export default Search;

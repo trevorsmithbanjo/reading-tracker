@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import Search from '../components/search/search';
-import Header from '../components/header/header';
+import SignUp from '../components/sign-in-and-sign-up/sign-up';
 
 const StyledBox = styled(Box)`
   display: flex;
@@ -15,14 +15,20 @@ const StyledBox = styled(Box)`
 
 const Home: React.FC = () => (
   <Container>
-    <Header />
     <StyledBox>
       <Typography variant="h2" component="h1">
         Reading Tracker
       </Typography>
     </StyledBox>
     <StyledBox>
-      <Search label="Search" />
+      <Search
+        label="Search"
+        // sx={{ '&.MuiStack-root': { width: '40%' } }}
+        width="40%"
+      />
+    </StyledBox>
+    <StyledBox>
+      <SignUp />
     </StyledBox>
   </Container>
 );

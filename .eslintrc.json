@@ -9,7 +9,8 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "airbnb",
-    "airbnb-typescript"
+    "airbnb-typescript",
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -40,8 +41,8 @@
     ],
     "prettier/prettier": 2,
     "no-console": 1,
-    "react/prop-types": "off",
-    "jsx-a11y/anchor-is-valid": "off"
+    "react/prop-types": "off"
+    // "jsx-a11y/anchor-is-valid": "off"
   },
   "settings": {
     "import/resolver": {

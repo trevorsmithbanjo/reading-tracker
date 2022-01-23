@@ -11,6 +11,9 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+
+import { auth, signInWithGoogle } from '../../firebase/firebase.utils.js';
 
 interface UserSignInState {
   email: string;
@@ -24,6 +27,7 @@ const SignIn: React.FC = () => {
     password: '',
     showPassword: false,
   });
+  const { email, password } = values;
 
   const handleChange =
     (prop: keyof UserSignInState) =>
@@ -42,6 +46,27 @@ const SignIn: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
+  };
+
+  const handleButtonDisabled = (): boolean => {
+    if (email === undefined || password === undefined) {
+      return true;
+    }
+    if (email.length === 0 || password.length === 0) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      setValues({ email: '', password: '' });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -68,6 +93,7 @@ const SignIn: React.FC = () => {
           sx={{ m: 1 }}
           inputProps={{ type: 'email' }}
           value={values.email}
+          onChange={handleChange('email')}
         />
         <FormControl variant="outlined" sx={{ m: 1 }}>
           <InputLabel htmlFor="password-label">Password</InputLabel>
@@ -91,6 +117,25 @@ const SignIn: React.FC = () => {
             label="Password"
           />
         </FormControl>
+        <Button
+          variant="contained"
+          disableElevation
+          sx={{ width: '60%', m: '0.5rem auto' }}
+          disabled={handleButtonDisabled()}
+          color="primary"
+          onClick={(event) => handleSubmit(event)}
+        >
+          Sign In
+        </Button>
+        <Button
+          variant="contained"
+          disableElevation
+          sx={{ width: '60%', m: '0.5rem auto' }}
+          color="success"
+          onClick={signInWithGoogle}
+        >
+          Sign In With Google
+        </Button>
       </Box>
     </Container>
   );

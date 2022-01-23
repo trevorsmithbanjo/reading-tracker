@@ -11,7 +11,12 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { UserSignInState } from './sign-up';
+
+interface UserSignInState {
+  email: string;
+  password: string;
+  showPassword?: boolean;
+}
 
 const SignIn: React.FC = () => {
   const [values, setValues] = useState<UserSignInState>({

@@ -11,26 +11,33 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
-export interface UserSignInState {
-  displayName?: string;
+import {
+  auth,
+  createUserProfileDocument,
+} from '../../firebase/firebase.utils.js';
+
+interface UserSignUpState {
+  displayName: string;
   email: string;
   password: string;
-  confirmPassword?: string;
+  confirmPassword: string;
   showPassword?: boolean;
 }
 
 const SignUp: React.FC = () => {
-  const [values, setValues] = useState<UserSignInState>({
+  const [values, setValues] = useState<UserSignUpState>({
     displayName: '',
     email: '',
     password: '',
     confirmPassword: '',
     showPassword: false,
   });
+  const { displayName, email, password, confirmPassword } = values;
 
   const handleChange =
-    (prop: keyof UserSignInState) =>
+    (prop: keyof UserSignUpState) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setValues({ ...values, [prop]: event.target.value });
     };
@@ -46,6 +53,51 @@ const SignUp: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
+  };
+
+  const handleButtonDisabled = (): boolean => {
+    if (
+      displayName === undefined ||
+      email === undefined ||
+      password === undefined ||
+      confirmPassword === undefined
+    ) {
+      return true;
+    }
+    if (
+      displayName.length === 0 ||
+      email.length === 0 ||
+      password.length === 0 ||
+      confirmPassword.length === 0
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("passwords don't match");
+    }
+
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+
+      await createUserProfileDocument(user, { displayName });
+      setValues({
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -72,32 +124,15 @@ const SignUp: React.FC = () => {
           sx={{ m: 1 }}
           inputProps={{ type: 'text' }}
           value={values.displayName}
+          onChange={handleChange('displayName')}
         />
-        {/* <FormControl variant="outlined" sx={{ m: 1 }}>
-          <InputLabel htmlFor="display-name-label">Display Name</InputLabel>
-          <OutlinedInput
-            id="display-name-input"
-            type="text"
-            value={values.displayName}
-            onChange={handleChange('displayName')}
-          />
-        </FormControl> */}
-
-        {/* <FormControl variant="outlined" sx={{ m: 1 }}>
-          <InputLabel htmlFor="email-label">Email</InputLabel>
-          <OutlinedInput
-            id="email-input"
-            type="email"
-            value={values.email}
-            onChange={handleChange('email')}
-          />
-        </FormControl> */}
         <TextField
           label="Email"
           id="email"
           sx={{ m: 1 }}
           inputProps={{ type: 'email' }}
           value={values.email}
+          onChange={handleChange('email')}
         />
         <FormControl variant="outlined" sx={{ m: 1 }}>
           <InputLabel htmlFor="password-label">Password</InputLabel>
@@ -145,6 +180,16 @@ const SignUp: React.FC = () => {
             label="Confirm-Password"
           />
         </FormControl>
+        <Button
+          variant="contained"
+          disableElevation
+          sx={{ width: '60%', m: '0 auto' }}
+          color="primary"
+          disabled={handleButtonDisabled()}
+          onClick={(event) => handleSubmit(event)}
+        >
+          Sign Up
+        </Button>
       </Box>
     </Container>
   );

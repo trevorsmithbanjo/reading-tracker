@@ -13,6 +13,7 @@ const CustomLink = styled(Link)`
   text-decoration: none;
   &:hover {
     text-decoration: underline;
+    opacity: 0.8;
   }
 `;
 

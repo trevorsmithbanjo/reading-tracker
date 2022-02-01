@@ -1,7 +1,6 @@
 import UserActionTypes from './user.types';
 
-// TODO Add proper type for user.
-const setCurrentUser = (user: any) => ({
+const setCurrentUser = (user: User) => ({
   type: UserActionTypes.SET_CURRENT_USER,
   payload: user,
 });

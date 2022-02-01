@@ -13,4 +13,8 @@ type UserState = {
   currentUser: User | null;
 };
 
+type State = {
+  user: UserState;
+};
+
 type DispatchType = (args: UserAction) => UserAction;
